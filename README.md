@@ -60,7 +60,7 @@ The first version only needs to do one thing well: get a group to a match.
 | Match when everyone says yes | Show the top 3 if nobody fully matches |
 | Address and directions on match | Reservations, past matches, sharing |
 
-## Working together (GitHub, to set up later)
+## Working together
 
 - One repo, this folder as the root. Each person works mostly in their own folder.
 - Work on a branch, open a pull request, the other person glances at it, then merge to `main`.
