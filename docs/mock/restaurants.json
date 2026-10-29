@@ -1,0 +1,59 @@
+{
+  "restaurants": [
+    {
+      "id": "r_001",
+      "name": "La Taqueria",
+      "photoUrl": "https://picsum.photos/seed/r001/600/800",
+      "price": 1,
+      "rating": 4.6,
+      "distanceMeters": 850,
+      "address": "2889 Mission St, San Francisco, CA",
+      "hours": "11:00–21:00",
+      "location": { "lat": 37.7509, "lng": -122.4181 }
+    },
+    {
+      "id": "r_002",
+      "name": "Kin Khao",
+      "photoUrl": "https://picsum.photos/seed/r002/600/800",
+      "price": 3,
+      "rating": 4.4,
+      "distanceMeters": 2100,
+      "address": "55 Cyril Magnin St, San Francisco, CA",
+      "hours": "17:00–22:00",
+      "location": { "lat": 37.7853, "lng": -122.4089 }
+    },
+    {
+      "id": "r_003",
+      "name": "Tartine Bakery",
+      "photoUrl": "https://picsum.photos/seed/r003/600/800",
+      "price": 2,
+      "rating": 4.5,
+      "distanceMeters": 1200,
+      "address": "600 Guerrero St, San Francisco, CA",
+      "hours": "08:00–17:00",
+      "location": { "lat": 37.7614, "lng": -122.4241 }
+    },
+    {
+      "id": "r_004",
+      "name": "Burma Superstar",
+      "photoUrl": "https://picsum.photos/seed/r004/600/800",
+      "price": 2,
+      "rating": 4.3,
+      "distanceMeters": 4800,
+      "address": "309 Clement St, San Francisco, CA",
+      "hours": "11:30–21:30",
+      "location": { "lat": 37.7830, "lng": -122.4627 }
+    },
+    {
+      "id": "r_005",
+      "name": "Swan Oyster Depot",
+      "photoUrl": "https://picsum.photos/seed/r005/600/800",
+      "price": 3,
+      "rating": 4.7,
+      "distanceMeters": 3300,
+      "address": "1517 Polk St, San Francisco, CA",
+      "hours": "10:30–17:30",
+      "location": { "lat": 37.7904, "lng": -122.4206 }
+    }
+  ]
+}
