@@ -65,4 +65,4 @@ The first version only needs to do one thing well: get a group to a match.
 - One repo, this folder as the root. Each person works mostly in their own folder.
 - Work on a branch, open a pull request, the other person glances at it, then merge to `main`.
 - Changes to `docs/API.md` need both of you to agree before merging, since you both depend on it.
-- Never commit API keys. They live in `backend/.env`, which is git-ignored.
+- Never commit API keys. They live in `backend/.env`, which is git-ignored
