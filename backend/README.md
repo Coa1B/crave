@@ -22,6 +22,26 @@ Copy `.env.example` to `.env` and fill it in. `.env` is git-ignored; never commi
 
 ## Stack
 
-Not picked yet (week 1 task). Write the choice here once it's decided so Davin knows the base URL and how to run the server locally.
+TypeScript, Node.js, Express. Groups live in memory for now (they reset when the server restarts); a database comes later. Live updates (WebSockets) and restaurant data are not built yet.
+
+## Run it locally
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+The server starts on `http://localhost:3000` (set `PORT` to change it). Check it with `GET /health`.
+
+## What works so far
+
+| Endpoint | Status |
+| --- | --- |
+| `POST /groups` | Done |
+| `POST /groups/:code/join` | Done |
+| `GET /groups/:id/restaurants` | Not yet |
+| `POST /groups/:id/swipes` | Not yet |
+| WebSocket live updates | Not yet |
 
 Tasks: see [`../TASKS.md`](../TASKS.md#back-end-colby).
