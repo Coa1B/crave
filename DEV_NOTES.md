@@ -73,7 +73,7 @@ Later, not now: accounts, saved groups, diet filters, "super like", top-3 result
 
 - Swipe gestures and card animations should feel smooth (aim for 60fps).
 - Every screen needs loading, empty, and error states. The app should never look broken or frozen.
-- Live updates (someone joined, match found) come from the back end over WebSockets. Show them right away.
+- Live updates (someone joined, match found) come from the back end over Socket.io. Show them right away.
 - Until an endpoint is ready, use the fake data in `docs/mock/`, which matches the agreed data shape, so the front end isn't blocked.
 
 ## Where front end and back end connect
@@ -86,7 +86,7 @@ The full contract lives in `docs/API.md`. Agree on changes with Colby before mer
 | Join a group | `POST /groups/:code/join` | Group info and members |
 | Get restaurant cards | `GET /groups/:id/restaurants` | Places: name, photo, price, rating, distance, address |
 | Send a swipe | `POST /groups/:id/swipes` | OK, or a match if this swipe made one |
-| Live updates | WebSocket per group | "member joined" and "match found" events |
+| Live updates | Socket.io connection | "member joined" and "match found" events |
 
 Still to decide:
 - Exact field names for a restaurant card

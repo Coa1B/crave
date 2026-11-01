@@ -16,7 +16,7 @@ X-Member-Id: m_7f3a
 | Join a group | `POST /groups/:code/join` | Group info, members, your member ID |
 | Get restaurant cards | `GET /groups/:id/restaurants` | List of places |
 | Send a swipe | `POST /groups/:id/swipes` | OK, or a match if this swipe made one |
-| Live updates | WebSocket `/groups/:id/live` | `member_joined`, `match_found` events |
+| Live updates | Socket.io connection | `state`, `member_joined`, `match_found` events |
 
 ### Start a group
 
@@ -110,21 +110,25 @@ Response `200`, this swipe made a match:
 
 ### Live updates
 
-Connect to `/groups/:id/live?memberId=m_7f3a`. The server sends:
+Live updates use [Socket.io](https://socket.io) (not a plain WebSocket). Connect to the server's base URL and pass the group and member IDs from the join response:
 
-```json
-{ "type": "member_joined", "member": { "id": "m_b812", "nickname": "Davin" } }
+```ts
+import { io } from "socket.io-client";
+
+const socket = io(BASE_URL, { auth: { groupId: "g_9c21", memberId: "m_7f3a" } });
+
+socket.on("state", ({ members, match }) => { /* ... */ });
+socket.on("member_joined", ({ member }) => { /* ... */ });
+socket.on("match_found", ({ restaurant }) => { /* ... */ });
 ```
 
-```json
-{ "type": "match_found", "restaurant": { "id": "r_001", "name": "La Taqueria", "address": "2889 Mission St, San Francisco, CA", "hours": "11:00–21:00", "location": { "lat": 37.7509, "lng": -122.4181 } } }
-```
+If the IDs don't belong to an open group, the connection is refused and `connect_error` fires with the message `GROUP_NOT_FOUND`. Socket.io reconnects on its own after a dropped connection.
 
-On connect (or reconnect), the server first sends a `state` event with the current members and match, so a phone that dropped can catch up:
-
-```json
-{ "type": "state", "members": [ … ], "match": null }
-```
+| Event | When | Payload |
+| --- | --- | --- |
+| `state` | Right after connecting, and again after every reconnect, so a phone that dropped catches up | `{ "members": [ … ], "match": null }` |
+| `member_joined` | Someone joins the group | `{ "member": { "id": "m_b812", "nickname": "Davin" } }` |
+| `match_found` | A swipe made a match (not built yet) | `{ "restaurant": { "id": "r_001", "name": "La Taqueria", "address": "2889 Mission St, San Francisco, CA", "hours": "11:00–21:00", "location": { "lat": 37.7509, "lng": -122.4181 } } }` |
 
 ## Errors
 

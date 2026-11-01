@@ -37,6 +37,13 @@ const GROUP_TTL_MS = Number(process.env.GROUP_TTL_HOURS ?? 24) * 60 * 60 * 1000;
 
 // In memory for now; swap for the database later without changing the API
 const groupsByCode = new Map<string, Group>();
+const groupsById = new Map<string, Group>();
+
+export function findGroupForMember(groupId: string, memberId: string): Group | undefined {
+  const group = groupsById.get(groupId);
+  if (!group || isExpired(group)) return undefined;
+  return group.members.some((m) => m.id === memberId) ? group : undefined;
+}
 
 function newId(prefix: string): string {
   return `${prefix}_${randomBytes(4).toString("hex")}`;
@@ -71,6 +78,7 @@ export function createGroup(input: {
     createdAt: Date.now(),
   };
   groupsByCode.set(group.joinCode, group);
+  groupsById.set(group.id, group);
   return { groupId: group.id, joinCode: group.joinCode, memberId: host.id };
 }
 

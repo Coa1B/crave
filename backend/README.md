@@ -12,7 +12,7 @@ Owns the data, the rules, and keeping everyone's phone in sync.
 | Restaurant data | Pull nearby places from a maps API (Google Places or Yelp) using the group's location and filters |
 | Swipes | Save each person's yes or no for each place |
 | Match logic | After every swipe, check whether everyone said yes to the same place |
-| Live updates | Push "member joined" and "match found" to every phone right away (WebSockets) |
+| Live updates | Push "member joined" and "match found" to every phone right away (Socket.io) |
 | Users | Nickname per group only; real accounts come later |
 | Hosting | Server and database online so it works on real phones |
 
@@ -22,7 +22,7 @@ Copy `.env.example` to `.env` and fill it in. `.env` is git-ignored; never commi
 
 ## Stack
 
-TypeScript, Node.js, Express. Groups live in memory for now (they reset when the server restarts); a database comes later. Live updates (WebSockets) and restaurant data are not built yet.
+TypeScript, Node.js, Express, Socket.io. Groups live in memory for now (they reset when the server restarts); a database comes later. Restaurant data, swipes and match logic are not built yet.
 
 ## Run it locally
 
@@ -42,6 +42,7 @@ The server starts on `http://localhost:3000` (set `PORT` to change it). Check it
 | `POST /groups/:code/join` | Done |
 | `GET /groups/:id/restaurants` | Not yet |
 | `POST /groups/:id/swipes` | Not yet |
-| WebSocket live updates | Not yet |
+| Socket.io: `state` and `member_joined` events | Done |
+| Socket.io: `match_found` event | Not yet |
 
 Tasks: see [`../TASKS.md`](../TASKS.md#back-end-colby).

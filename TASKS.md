@@ -44,21 +44,21 @@ About 8 weeks to a working first version. Stretch or shrink to fit your schedule
 - [ ] Swipe gestures and card animations
 - [ ] Build every screen against the mock data in `docs/mock/`
 - [ ] Connect each screen to the real endpoints
-- [ ] Live updates over the WebSocket (people joining, a match landing)
+- [ ] Live updates over Socket.io (people joining, a match landing)
 - [ ] Loading, empty, and error states on every screen
 - [ ] "Open directions" button hands off to the phone's maps app
 
 ## Back end (Colby)
 
 **Setup**
-- [ ] Pick the stack (language, framework, database) and write it in `backend/README.md`
+- [x] Pick the stack (language, framework, database) and write it in `backend/README.md`
 - [ ] Pick the restaurant API (Google Places or Yelp); get a key; note the free-tier limits
 - [ ] Keep keys in `backend/.env` only
 
 **Groups**
-- [ ] `POST /groups`: create a group with location and filters, return ID and join code
+- [x] `POST /groups`: create a group with location and filters, return ID and join code
 - [ ] Short, readable join codes that don't collide with open groups
-- [ ] `POST /groups/:code/join`: add a member by nickname, return group info and members
+- [x] `POST /groups/:code/join`: add a member by nickname, return group info and members
 - [ ] Close old groups after a while (e.g. 24 hours)
 
 **Restaurant data**
@@ -73,10 +73,10 @@ About 8 weeks to a working first version. Stretch or shrink to fit your schedule
 - [ ] Handle the stack running out with no match
 
 **Live updates**
-- [ ] WebSocket per group
-- [ ] Send `member_joined` when someone joins
+- [x] Socket.io room per group
+- [x] Send `member_joined` when someone joins
 - [ ] Send `match_found` to every phone when a match happens
-- [ ] Handle phones reconnecting (send current state on reconnect)
+- [x] Handle phones reconnecting (send current state on reconnect)
 
 **Launch**
 - [ ] Host the server and database online so it works on real phones

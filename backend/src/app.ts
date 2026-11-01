@@ -1,5 +1,6 @@
 import express, { type ErrorRequestHandler } from "express";
 import { ApiError, createGroup, joinGroup } from "./groups.js";
+import { emitToGroup } from "./live.js";
 
 function invalid(message: string): never {
   throw new ApiError(400, "INVALID_INPUT", message);
@@ -37,7 +38,10 @@ export function buildApp() {
 
   app.post("/groups/:code/join", (req, res) => {
     const nickname = readNickname(req.body?.nickname);
-    res.json(joinGroup(req.params.code, nickname));
+    const result = joinGroup(req.params.code, nickname);
+    const member = result.members.find((m) => m.id === result.memberId);
+    emitToGroup(result.groupId, "member_joined", { member });
+    res.json(result);
   });
 
   app.use((_req, _res, next) => {
