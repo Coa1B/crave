@@ -31,7 +31,7 @@ Later, not now: accounts, saved groups, diet filters, "super like", top-3 result
 ## Tech stack (proposed)
 
 - **Language:** TypeScript on both sides
-- **Front end:** React Native with Expo
+- **Front end:** React web app (mobile-first), Vite + TypeScript
 - **Back end:** Node.js + Express, Socket.io for live updates, PostgreSQL
 - Restaurant data comes from a maps API (Google Places or Yelp), called from the back end only. Never put API keys in front-end code.
 

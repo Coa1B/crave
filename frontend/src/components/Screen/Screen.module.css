@@ -1,0 +1,15 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-gap);
+  width: 100%;
+  max-width: var(--screen-max-width);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: max(var(--space-screen-top), env(safe-area-inset-top)) var(--space-screen-x)
+    max(var(--space-screen-bottom), env(safe-area-inset-bottom));
+}
+
+.spacer {
+  flex: 1 0 0;
+}
