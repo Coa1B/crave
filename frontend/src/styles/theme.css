@@ -1,0 +1,60 @@
+/* Design tokens from the Figma file (restaurant-decider). Use these everywhere; no one-off values in screens. */
+:root {
+  /* Color */
+  --color-primary: #ff5c4d;
+  --color-primary-pressed: #e8503f;
+  --color-on-primary: #ffffff;
+  --color-bg: #fcf7f2;
+  --color-surface: #ffffff;
+  --color-border: #e5e0db;
+  --color-text: #1c1c21;
+  --color-text-muted: #737380;
+  --color-disabled-bg: #e0dedb;
+  --color-disabled-text: #737380;
+  /* Not in Figma yet (notes say "red 'Code not found'"); confirm in the style guide. */
+  --color-error: #d92d20;
+
+  /* Type */
+  --font-family: "Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-size-display: 34px;
+  --font-size-title: 30px;
+  --font-size-code: 32px;
+  --font-size-body: 17px;
+  --font-size-input: 17px;
+  --font-size-button: 17px;
+  --font-size-subtitle: 16px;
+  --font-size-eyebrow: 15px;
+  --font-size-label: 14px;
+  --font-size-caption: 13px;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Space */
+  --space-gap: 16px;
+  --space-label: 8px;
+  --space-code-gap: 12px;
+  --space-screen-x: 24px;
+  --space-screen-top: 60px;
+  --space-screen-bottom: 36px;
+
+  /* Shape */
+  --radius-button: 14px;
+  --radius-app-icon: 24px;
+  --radius-code-box: 16px;
+  --border-width: 1.5px;
+  --border-width-active: 2.5px;
+
+  /* Sizes */
+  --button-height: 52px;
+  --input-height: 52px;
+  --code-box-width: 68px;
+  --code-box-height: 80px;
+  --tap-target-min: 44px;
+  --screen-max-width: 430px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --duration-press: 160ms;
+}

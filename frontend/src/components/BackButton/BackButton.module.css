@@ -1,0 +1,24 @@
+.back {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font-size: var(--font-size-subtitle);
+  font-weight: var(--font-weight-medium);
+}
+
+.back img {
+  display: block;
+}
+
+/* Grow the tap area to 44px tall without moving the layout. */
+.back::after {
+  content: "";
+  position: absolute;
+  inset: calc((var(--tap-target-min) - 22px) / -2) -8px;
+}
