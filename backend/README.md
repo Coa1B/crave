@@ -34,6 +34,8 @@ npm run dev
 
 The server starts on `http://localhost:3000` (set `PORT` to change it). Check it with `GET /health`.
 
+The front end is a web app on a different address (for example `http://localhost:5173`, or a phone opening the Vite Network URL), so the server sends CORS headers. By default it allows any origin, which is fine for local work. Before deploying, set `CORS_ORIGIN` in `.env` to the front end's real address.
+
 ## What works so far
 
 | Endpoint | Status |

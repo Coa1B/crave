@@ -1,4 +1,4 @@
-import { randomBytes } from "node:crypto";
+import { randomBytes, randomInt } from "node:crypto";
 
 export interface Member {
   id: string;
@@ -30,9 +30,9 @@ export class ApiError extends Error {
   }
 }
 
-// No 0/O/1/I so codes are easy to read out loud
-const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-const CODE_LENGTH = 6;
+// Letters only, to match the "4-letter code" join screen. No I or O, which look like 1 and 0.
+const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+const CODE_LENGTH = 4;
 const GROUP_TTL_MS = Number(process.env.GROUP_TTL_HOURS ?? 24) * 60 * 60 * 1000;
 
 // In memory for now; swap for the database later without changing the API
@@ -52,8 +52,8 @@ function newId(prefix: string): string {
 function newJoinCode(): string {
   for (;;) {
     let code = "";
-    for (const byte of randomBytes(CODE_LENGTH)) {
-      code += CODE_ALPHABET[byte % CODE_ALPHABET.length];
+    for (let i = 0; i < CODE_LENGTH; i++) {
+      code += CODE_ALPHABET[randomInt(CODE_ALPHABET.length)];
     }
     if (!groupsByCode.has(code)) return code;
   }

@@ -2,7 +2,7 @@
 
 This is a **starting draft** for you both to edit in week 1–2. Field names here are suggestions; once you agree, treat this file as the source of truth and change it only when both of you are OK with it.
 
-All requests and responses are JSON. The member's ID goes in a header so the server knows who's swiping:
+All requests and responses are JSON. The server allows cross-origin requests from the web front end (see `CORS_ORIGIN` in `backend/.env.example`). The member's ID goes in a header so the server knows who's swiping:
 
 ```
 X-Member-Id: m_7f3a
@@ -17,6 +17,8 @@ X-Member-Id: m_7f3a
 | Get restaurant cards | `GET /groups/:id/restaurants` | List of places |
 | Send a swipe | `POST /groups/:id/swipes` | OK, or a match if this swipe made one |
 | Live updates | Socket.io connection | `state`, `member_joined`, `match_found` events |
+
+The join code is **4 capital letters** (no I or O). The back end accepts it in any case.
 
 ### Start a group
 
@@ -35,14 +37,14 @@ Response `201`:
 ```json
 {
   "groupId": "g_9c21",
-  "joinCode": "TACO42",
+  "joinCode": "TACO",
   "memberId": "m_7f3a"
 }
 ```
 
 ### Join a group
 
-`POST /groups/TACO42/join`
+`POST /groups/TACO/join`
 
 ```json
 { "nickname": "Davin" }
