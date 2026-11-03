@@ -57,9 +57,9 @@ About 8 weeks to a working first version. Stretch or shrink to fit your schedule
 
 **Groups**
 - [x] `POST /groups`: create a group with location and filters, return ID and join code
-- [ ] Short, readable join codes that don't collide with open groups
+- [x] Short, readable join codes that don't collide with open groups
 - [x] `POST /groups/:code/join`: add a member by nickname, return group info and members
-- [ ] Close old groups after a while (e.g. 24 hours)
+- [x] Close old groups after a while (e.g. 24 hours)
 
 **Restaurant data**
 - [ ] `GET /groups/:id/restaurants`: fetch nearby places using the group's filters

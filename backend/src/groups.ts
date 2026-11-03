@@ -59,8 +59,22 @@ function newJoinCode(): string {
   }
 }
 
-function isExpired(group: Group): boolean {
-  return Date.now() - group.createdAt > GROUP_TTL_MS;
+// Frees groups past their lifetime. Between sweeps an expired group still answers
+// GROUP_CLOSED; once swept, its code answers GROUP_NOT_FOUND.
+export function removeExpiredGroups(now = Date.now()): number {
+  let removed = 0;
+  for (const group of groupsById.values()) {
+    if (isExpired(group, now)) {
+      groupsById.delete(group.id);
+      groupsByCode.delete(group.joinCode);
+      removed++;
+    }
+  }
+  return removed;
+}
+
+function isExpired(group: Group, now = Date.now()): boolean {
+  return now - group.createdAt > GROUP_TTL_MS;
 }
 
 export function createGroup(input: {
