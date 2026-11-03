@@ -13,7 +13,7 @@ The load test starts a group per simulated host, joins the other members, and ke
 
 ## Back end load test
 
-Run on 2026-11-03, Mac with an Apple M3 chip (8 cores), Node 24. The server and the test ran on the same laptop, over localhost, with groups stored in memory. No restaurant or swipe features existed yet, so this covers creating groups, joining, and live updates only.
+Run on 2026-11-03, Mac with an Apple M3 chip (8 cores), Node 24. The server and the test ran on the same computer, over localhost, with groups stored in memory. No restaurant or swipe features existed yet, so this covers creating groups, joining, and live updates only.
 
 Run: 200 groups x 6 members = **1,200 phones connected at once**, 0 failures, finished in 0.48 s.
 
