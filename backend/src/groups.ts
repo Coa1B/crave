@@ -30,8 +30,9 @@ export class ApiError extends Error {
   }
 }
 
-// Letters only, to match the "4-letter code" join screen. No I or O, which look like 1 and 0.
-const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+// Digits only: 4 numbers are quick to say out loud and type. Codes are strings, so a
+// leading zero ("0427") is kept. Only needs to be unique among groups open right now.
+const CODE_ALPHABET = "0123456789";
 const CODE_LENGTH = 4;
 const GROUP_TTL_MS = Number(process.env.GROUP_TTL_HOURS ?? 24) * 60 * 60 * 1000;
 
@@ -50,13 +51,15 @@ function newId(prefix: string): string {
 }
 
 function newJoinCode(): string {
-  for (;;) {
+  // Only 10,000 codes exist, so stop trying rather than loop forever if nearly all are in use
+  for (let attempt = 0; attempt < 200; attempt++) {
     let code = "";
     for (let i = 0; i < CODE_LENGTH; i++) {
       code += CODE_ALPHABET[randomInt(CODE_ALPHABET.length)];
     }
     if (!groupsByCode.has(code)) return code;
   }
+  throw new ApiError(503, "SERVER_BUSY", "Too many groups are open right now. Try again in a minute.");
 }
 
 // Frees groups past their lifetime. Between sweeps an expired group still answers

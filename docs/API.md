@@ -18,7 +18,7 @@ X-Member-Id: m_7f3a
 | Send a swipe | `POST /groups/:id/swipes` | OK, or a match if this swipe made one |
 | Live updates | Socket.io connection | `state`, `member_joined`, `match_found` events |
 
-The join code is **4 capital letters** (no I or O). The back end accepts it in any case.
+The join code is a **4-digit number sent as text** (for example `"0427"`, so keep any leading zero).
 
 ### Start a group
 
@@ -37,14 +37,14 @@ Response `201`:
 ```json
 {
   "groupId": "g_9c21",
-  "joinCode": "TACO",
+  "joinCode": "4271",
   "memberId": "m_7f3a"
 }
 ```
 
 ### Join a group
 
-`POST /groups/TACO/join`
+`POST /groups/4271/join`
 
 ```json
 { "nickname": "Davin" }
@@ -147,6 +147,7 @@ Every error uses the same shape, so the front end can show `message` directly:
 | `NICKNAME_TAKEN` | 409 | Someone in the group already has that nickname |
 | `INVALID_INPUT` | 400 | Missing or bad fields |
 | `NO_RESTAURANTS` | 200 + empty list | Nothing matched the filters (not an error; show the "widen filters" screen) |
+| `SERVER_BUSY` | 503 | Every join code is in use (rare; try again shortly) |
 | `SERVER_ERROR` | 500 | Anything else |
 
 ## Open questions
