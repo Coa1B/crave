@@ -1,5 +1,6 @@
 import type { Server as HttpServer } from "node:http";
 import { Server } from "socket.io";
+import { corsOrigin } from "./cors.js";
 import { findGroupForMember } from "./groups.js";
 
 let io: Server | undefined;
@@ -7,7 +8,7 @@ let io: Server | undefined;
 // Phones connect with { groupId, memberId } in the handshake auth.
 // Each group is one Socket.io room named after its group ID.
 export function attachLive(server: HttpServer) {
-  io = new Server(server);
+  io = new Server(server, { cors: { origin: corsOrigin } });
 
   io.use((socket, next) => {
     const { groupId, memberId } = socket.handshake.auth ?? {};

@@ -4,6 +4,20 @@
 
 Everything people see and tap: screens, swipe gestures, animations, and the live "someone joined" / "it's a match" moments.
 
+## Run it
+
+React + TypeScript web app built with Vite, designed for phones first.
+
+```sh
+npm install
+npm run dev
+```
+
+Vite prints a local URL and a Network URL. Open the Network URL on your phone (same Wi-Fi) to try it on a real device.
+
+- Design tokens (colors, type, spacing) live in [`src/styles/theme.css`](src/styles/theme.css). Use them instead of hardcoded values.
+- Shared components are in `src/components/`, screens in `src/screens/`.
+
 ## Screens
 
 | Screen | What it shows |

@@ -12,7 +12,7 @@ A group of friends can't agree on where to eat. Everyone swipes yes or no on nea
 | Back end: groups, restaurant data, swipes, match logic, live updates, hosting | Colby | [`backend/`](backend/) |
 | API contract: endpoints, field names, events, errors | Both | [`docs/API.md`](docs/API.md) |
 
-The full task split is in [`TASKS.md`](TASKS.md).
+The full task split is in [`TASKS.md`](TASKS.md). Measured numbers for the resume are in [`STATS.md`](STATS.md).
 
 ## Project layout
 
