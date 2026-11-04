@@ -1,0 +1,76 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.boxes {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-code-gap);
+  width: 100%;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 var(--code-box-width);
+  height: var(--code-box-height);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-code-box);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--font-size-code);
+  font-weight: var(--font-weight-bold);
+}
+
+.active {
+  border: var(--border-width-active) solid var(--color-primary);
+}
+
+.invalid {
+  border-color: var(--color-error);
+}
+
+.cursor {
+  width: 2px;
+  height: 32px;
+  background: var(--color-primary);
+  animation: blink 1s steps(1) infinite;
+}
+
+/* Invisible, but covers the boxes so tapping any box opens the keyboard. */
+.input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  caret-color: transparent;
+  font-size: 16px; /* 16px+ stops iOS zooming in on focus */
+  opacity: 0;
+}
+
+.shake {
+  animation: shake 400ms var(--ease-out);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shake,
+  .cursor {
+    animation: none;
+  }
+}

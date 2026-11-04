@@ -1,0 +1,58 @@
+.appIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-app-icon);
+  background: var(--color-primary);
+}
+
+.appIcon img {
+  display: block;
+}
+
+.eyebrow {
+  color: var(--color-primary);
+  font-size: var(--font-size-eyebrow);
+  font-weight: var(--font-weight-semibold);
+}
+
+.title {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  line-height: normal;
+}
+
+.body {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+}
+
+.location {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+}
+
+/* Looks like inline text, but the tap area grows to 44px without moving the layout. */
+.changeButton {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-weight: inherit;
+}
+
+.changeButton::after {
+  content: "";
+  position: absolute;
+  inset: 50% 50%;
+  min-width: var(--tap-target-min);
+  min-height: var(--tap-target-min);
+  transform: translate(-50%, -50%);
+}
