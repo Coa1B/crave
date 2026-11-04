@@ -11,6 +11,9 @@
   --color-text-muted: #737380;
   --color-disabled-bg: #e0dedb;
   --color-disabled-text: #737380;
+  --color-primary-soft: #ffe8e3; /* selected chip, avatar, Share invite pill */
+  /* Not in Figma (no dialog designed yet): dim layer behind the Leave dialog. */
+  --color-scrim: rgb(28 28 33 / 0.4);
   /* Not in Figma yet (notes say "red 'Code not found'"); confirm in the style guide. */
   --color-error: #d92d20;
 
@@ -26,6 +29,11 @@
   --font-size-eyebrow: 15px;
   --font-size-label: 14px;
   --font-size-caption: 13px;
+  --font-size-overline: 12px;
+  --font-size-code-display: 40px;
+  --font-size-plus: 20px;
+  --letter-spacing-overline: 1.5px;
+  --letter-spacing-code: 10px;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
@@ -38,11 +46,21 @@
   --space-screen-x: 24px;
   --space-screen-top: 60px;
   --space-screen-bottom: 36px;
+  --space-gap-lobby: 14px;
+  --space-filter-label: 6px;
+  --space-chip-gap: 8px;
+  --space-avatar-gap: 10px;
+  --space-card-y: 18px;
+  --space-chip-x: 14px;
+  --space-chip-y: 8px;
 
   /* Shape */
   --radius-button: 14px;
   --radius-app-icon: 24px;
   --radius-code-box: 16px;
+  --radius-card: 20px;
+  --radius-pill: 999px;
+  --border-width-hairline: 1px;
   --border-width: 1.5px;
   --border-width-active: 2.5px;
 
@@ -52,9 +70,11 @@
   --code-box-width: 68px;
   --code-box-height: 80px;
   --tap-target-min: 44px;
+  --avatar-size: 44px;
   --screen-max-width: 430px;
 
   /* Motion */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --duration-press: 160ms;
+  --duration-pop: 320ms;
 }
