@@ -169,8 +169,6 @@ function SwipeRoute() {
           })
           .catch((error) => console.warn("Swipe not sent", error));
       }}
-      // TODO: Details sheet (Figma 6. Details sheet).
-      onOpenDetails={(restaurant) => console.info("Details", restaurant.name)}
       // TODO: Waiting screen (Figma 7. Waiting).
       onFinished={() => console.info("Finished swiping")}
       onLeave={() => navigate("/", { replace: true })}

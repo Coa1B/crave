@@ -10,11 +10,30 @@ type RestaurantCardProps = {
   overlay?: ReactNode;
 };
 
+/** "Mexican · $$ · 0.8 mi away" */
+export function restaurantMeta(r: Restaurant) {
+  return [r.cuisine, priceLabel(r.price), milesAway(r.distanceMeters)].filter(Boolean).join(" · ");
+}
+
+/** ★ 4.6 · 1.2k reviews */
+export function Rating({ restaurant: r }: { restaurant: Restaurant }) {
+  return (
+    <p className={styles.rating}>
+      <img src={starIcon} width={16} height={16} alt="" />
+      <span>
+        <span className="sr-only">Rated </span>
+        {r.rating.toFixed(1)}
+        {r.reviewCount ? ` · ${compactCount(r.reviewCount)} reviews` : ""}
+      </span>
+    </p>
+  );
+}
+
 /** Photo + name + meta + rating (Figma "Restaurant card"). */
 export function RestaurantCard({ restaurant: r, overlay }: RestaurantCardProps) {
   const [photoFailed, setPhotoFailed] = useState(false);
   const open = isOpenNow(r.hours);
-  const meta = [r.cuisine, priceLabel(r.price), milesAway(r.distanceMeters)].filter(Boolean).join(" · ");
+  const meta = restaurantMeta(r);
 
   return (
     <article className={styles.card} aria-labelledby={`card-${r.id}`}>
@@ -41,14 +60,7 @@ export function RestaurantCard({ restaurant: r, overlay }: RestaurantCardProps) 
           {r.name}
         </h2>
         <p className={styles.meta}>{meta}</p>
-        <p className={styles.rating}>
-          <img src={starIcon} width={16} height={16} alt="" />
-          <span>
-            <span className="sr-only">Rated </span>
-            {r.rating.toFixed(1)}
-            {r.reviewCount ? ` · ${compactCount(r.reviewCount)} reviews` : ""}
-          </span>
-        </p>
+        <Rating restaurant={r} />
       </div>
     </article>
   );

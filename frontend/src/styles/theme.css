@@ -42,6 +42,7 @@
   --font-size-code-display: 40px;
   --font-size-plus: 20px;
   --font-size-card-title: 24px;
+  --font-size-sheet-title: 26px;
   --font-size-meta: 15px;
   --font-size-stamp: 34px;
   --letter-spacing-overline: 1.5px;
@@ -74,6 +75,8 @@
   --radius-card: 20px;
   --radius-swipe-card: 24px;
   --radius-stamp: 10px;
+  --radius-sheet: 28px;
+  --radius-photo: 14px;
   --radius-pill: 999px;
   --border-width-hairline: 1px;
   --border-width: 1.5px;
@@ -94,6 +97,12 @@
   --space-card-info: 18px;
   --space-card-photo: 14px;
   --space-actions: 24px;
+  --space-sheet-gap: 12px;
+  --space-sheet-top: 110px; /* dimmed swipe screen above the sheet */
+  --space-info-icon: 10px;
+  --sheet-photo-height: 84px;
+  --sheet-handle-width: 40px;
+  --sheet-handle-height: 5px;
   --dropdown-max-height: 232px; /* ~5 options, so it's clear the list scrolls */
   --screen-max-width: 430px;
 
@@ -103,5 +112,7 @@
   --duration-pop: 320ms;
   --duration-fly: 280ms; /* card leaving the screen */
   --duration-snap: 420ms; /* card springing back */
+  --duration-sheet: 320ms;
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1); /* iOS-style sheet */
   --ease-snap: cubic-bezier(0.34, 1.4, 0.64, 1); /* slight overshoot */
 }

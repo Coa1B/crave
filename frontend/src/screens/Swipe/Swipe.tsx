@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent } from "react";
 import { Button } from "../../components/Button/Button";
 import { ConfirmDialog } from "../../components/ConfirmDialog/ConfirmDialog";
+import { DetailsSheet } from "../../components/DetailsSheet/DetailsSheet";
 import { RestaurantCard } from "../../components/RestaurantCard/RestaurantCard";
 import { Screen } from "../../components/Screen/Screen";
 import type { Restaurant } from "../../api/restaurants";
@@ -23,7 +24,6 @@ type SwipeProps = {
   /** Nothing matched the filters: go back and change them. */
   onChangeFilters: () => void;
   onSwipe: (restaurant: Restaurant, liked: boolean) => void;
-  onOpenDetails: (restaurant: Restaurant) => void;
   /** Swiped through every card. */
   onFinished: () => void;
   onLeave: () => void;
@@ -39,12 +39,13 @@ const FLICK_SPEED = 0.5; // px per ms
 const clamp = (n: number, min: number, max: number) => Math.min(Math.max(n, min), max);
 const reducedMotion = () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 
-export function Swipe({ load, onRetry, onChangeFilters, onSwipe, onOpenDetails, onFinished, onLeave }: SwipeProps) {
+export function Swipe({ load, onRetry, onChangeFilters, onSwipe, onFinished, onLeave }: SwipeProps) {
   const restaurants = load.status === "ready" ? load.restaurants : [];
   const total = restaurants.length;
   const [index, setIndex] = useState(0);
   const [intent, setIntent] = useState<Intent>(null);
   const [confirmLeave, setConfirmLeave] = useState(false);
+  const [detailsFor, setDetailsFor] = useState<Restaurant | null>(null);
 
   const current = restaurants[index];
   const next = restaurants[index + 1];
@@ -94,7 +95,7 @@ export function Swipe({ load, onRetry, onChangeFilters, onSwipe, onOpenDetails, 
   // Arrow keys swipe too (handy on a laptop).
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (confirmLeave || e.target instanceof HTMLInputElement) return;
+      if (confirmLeave || detailsFor || e.target instanceof HTMLInputElement) return;
       if (e.key === "ArrowRight") flyOut(1);
       if (e.key === "ArrowLeft") flyOut(-1);
     }
@@ -215,7 +216,7 @@ export function Swipe({ load, onRetry, onChangeFilters, onSwipe, onOpenDetails, 
     if (!d || d.pointerId !== e.pointerId) return;
     drag.current = null;
     if (!d.moved) {
-      if (current) onOpenDetails(current);
+      if (current) setDetailsFor(current);
       return;
     }
     const flick = Math.abs(d.vx) > FLICK_SPEED && Math.abs(d.dx) > 30 && Math.sign(d.vx) === Math.sign(d.dx);
@@ -338,7 +339,7 @@ export function Swipe({ load, onRetry, onChangeFilters, onSwipe, onOpenDetails, 
         <button
           type="button"
           className={[styles.action, styles.details, intent && styles.faded].filter(Boolean).join(" ")}
-          onClick={() => current && onOpenDetails(current)}
+          onClick={() => current && setDetailsFor(current)}
           disabled={!canAct}
           aria-label="Details"
         >
@@ -368,6 +369,17 @@ export function Swipe({ load, onRetry, onChangeFilters, onSwipe, onOpenDetails, 
       >
         {hint}
       </p>
+
+      {detailsFor && (
+        <DetailsSheet
+          restaurant={detailsFor}
+          onClosed={(action) => {
+            setDetailsFor(null);
+            // Like / Pass in the sheet swipes the card away too.
+            if (action) flyOut(action === "like" ? 1 : -1);
+          }}
+        />
+      )}
 
       <ConfirmDialog
         open={confirmLeave}

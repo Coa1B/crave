@@ -18,6 +18,12 @@ export type Restaurant = {
   cuisine?: string;
   /** Not in the API yet (Figma shows "4.6 · 1.2k reviews"). */
   reviewCount?: number;
+  /** Not in the API yet: extra photos for the Details sheet (falls back to photoUrl). */
+  photos?: string[];
+  /** Not in the API yet: "Popular dishes" in the Details sheet. */
+  popularDishes?: string[];
+  /** Not in the API yet: "View menu" link (falls back to a web search). */
+  menuUrl?: string;
 };
 
 export type SwipeResult = { ok: true; match: { restaurantId: string } | null };
@@ -49,6 +55,18 @@ const MOCK: Array<[string, string, number, number, number, string, number]> = [
   ["Copper Pot Curry", "Indian", 2, 4.3, 2800, "11:00–22:00", 455],
 ];
 
+const MOCK_DISHES: Record<string, string[]> = {
+  Mexican: ["Al pastor tacos", "Burrito", "Horchata"],
+  Thai: ["Pad see ew", "Green curry", "Mango sticky rice"],
+  Pizza: ["Margherita", "Pepperoni slice", "Garlic knots"],
+  Sushi: ["Omakase", "Spicy tuna roll", "Miso soup"],
+  Burgers: ["Double smash burger", "Garlic fries", "Milkshake"],
+  Indian: ["Butter chicken", "Garlic naan", "Samosas"],
+  Chinese: ["Hand-pulled noodles", "Pork dumplings", "Mapo tofu"],
+  Korean: ["Galbi", "Bibimbap", "Kimchi pancake"],
+  Ramen: ["Tonkotsu ramen", "Gyoza", "Karaage"],
+};
+
 /** Mock of GET /groups/:id/restaurants. Every member gets the same list in the same order. */
 export async function getRestaurants(_groupId: string): Promise<Restaurant[]> {
   await wait(500);
@@ -64,6 +82,8 @@ export async function getRestaurants(_groupId: string): Promise<Restaurant[]> {
       distanceMeters,
       hours,
       photoUrl: `https://picsum.photos/seed/crave-${id}/600/800`,
+      photos: [1, 2, 3].map((n) => `https://picsum.photos/seed/crave-${id}-${n}/300/220`),
+      popularDishes: MOCK_DISHES[cuisine],
       address: `${100 + i * 37} Shattuck Ave, Berkeley, CA`,
       location: { lat: 37.8715 + i * 0.001, lng: -122.2681 - i * 0.001 },
     };
