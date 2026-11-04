@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, useSearchParams } from "react-router";
 import { createGroup, joinGroup, watchMembers, type Member } from "./api/groups";
 import { Home } from "./screens/Home/Home";
 import { JoinGroup } from "./screens/JoinGroup/JoinGroup";
 import { DEFAULT_FILTERS, Lobby, type LobbyFilters } from "./screens/Lobby/Lobby";
+import { Swipe, type SwipeLoadState } from "./screens/Swipe/Swipe";
+import { getRestaurants, sendSwipe } from "./api/restaurants";
 import { shareInvite } from "./utils/shareInvite";
 
 // Mock location until the location flow is built (see Figma notes for 1. Home).
@@ -26,8 +28,8 @@ function saveNickname(name: string) {
   }
 }
 
-/** Who you are in the group you're in. Passed to /lobby as router state (survives a page refresh). */
-type LobbySession = {
+/** Who you are in the group you're in. Passed to /lobby and /swipe as router state (survives a page refresh). */
+type GroupSession = {
   groupId: string;
   memberId: string;
   code: string;
@@ -58,7 +60,7 @@ function HomeRoute() {
           // TODO: Home has no name field yet, so the host uses their saved name (or "You").
           const nickname = loadNickname() || "You";
           const group = await createGroup(nickname);
-          const session: LobbySession = {
+          const session: GroupSession = {
             groupId: group.groupId,
             memberId: group.memberId,
             code: group.joinCode,
@@ -89,7 +91,7 @@ function JoinRoute() {
       onJoin={joinGroup}
       onJoined={(result, nickname, code) => {
         saveNickname(nickname);
-        const session: LobbySession = {
+        const session: GroupSession = {
           groupId: result.groupId,
           memberId: result.memberId,
           code,
@@ -105,7 +107,7 @@ function JoinRoute() {
 
 function LobbyRoute() {
   const navigate = useNavigate();
-  const session = useLocation().state as LobbySession | null;
+  const session = useLocation().state as GroupSession | null;
   const [members, setMembers] = useState<Member[] | null>(null);
   const [filters, setFilters] = useState<LobbyFilters>(DEFAULT_FILTERS);
 
@@ -128,9 +130,49 @@ function LobbyRoute() {
       // TODO: send filter changes to the backend (no endpoint for this yet).
       onFiltersChange={setFilters}
       onShareInvite={() => shareInvite(session.code)}
-      // TODO: Swipe screen.
-      onStart={() => console.info("Start swiping", filters)}
+      // TODO: send the filters with "start", and move guests along when the host starts (needs a socket event).
+      onStart={() => navigate("/swipe", { state: session, replace: true })}
       // TODO: tell the backend we left (no endpoint for this yet).
+      onLeave={() => navigate("/", { replace: true })}
+    />
+  );
+}
+
+function SwipeRoute() {
+  const navigate = useNavigate();
+  const session = useLocation().state as GroupSession | null;
+  const [load, setLoad] = useState<SwipeLoadState>({ status: "loading" });
+
+  const fetchRestaurants = useCallback(() => {
+    if (!session) return;
+    setLoad({ status: "loading" });
+    getRestaurants(session.groupId)
+      .then((restaurants) => setLoad({ status: "ready", restaurants }))
+      .catch(() => setLoad({ status: "error" }));
+  }, [session?.groupId]);
+
+  useEffect(fetchRestaurants, [fetchRestaurants]);
+
+  if (!session) return <Navigate to="/" replace />;
+
+  return (
+    <Swipe
+      load={load}
+      onRetry={fetchRestaurants}
+      onChangeFilters={() => navigate("/lobby", { state: session, replace: true })}
+      onSwipe={(restaurant, liked) => {
+        // Sent in the background so the next card shows right away.
+        sendSwipe(session.groupId, restaurant.id, liked)
+          .then((result) => {
+            // TODO: open the Match screen.
+            if (result.match) console.info("Match!", result.match);
+          })
+          .catch((error) => console.warn("Swipe not sent", error));
+      }}
+      // TODO: Details sheet (Figma 6. Details sheet).
+      onOpenDetails={(restaurant) => console.info("Details", restaurant.name)}
+      // TODO: Waiting screen (Figma 7. Waiting).
+      onFinished={() => console.info("Finished swiping")}
       onLeave={() => navigate("/", { replace: true })}
     />
   );
@@ -143,6 +185,7 @@ export function App() {
         <Route path="/" element={<HomeRoute />} />
         <Route path="/join" element={<JoinRoute />} />
         <Route path="/lobby" element={<LobbyRoute />} />
+        <Route path="/swipe" element={<SwipeRoute />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

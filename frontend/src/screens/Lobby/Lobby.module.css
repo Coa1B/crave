@@ -1,6 +1,6 @@
 /* Figma's Lobby frame uses a 14px gap instead of the usual 16px. */
 .screen {
-  gap: var(--space-gap-lobby);
+  gap: var(--space-gap-compact);
 }
 
 .header {
