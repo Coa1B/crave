@@ -7,7 +7,7 @@ import { TextField } from "../../components/TextField/TextField";
 import type { JoinResult } from "../../api/groups";
 import styles from "./JoinGroup.module.css";
 
-/** Figma says 4 letters; the backend currently makes 6-character codes. Change here once agreed. */
+/** Join codes are 4 digits, kept as text so a leading zero survives (e.g. "0427"). Matches the backend. */
 export const CODE_LENGTH = 4;
 const NICKNAME_MAX = 30; // backend limit
 
@@ -38,7 +38,7 @@ export function JoinGroup({ initialName = "", onBack, onJoin, onJoined }: JoinGr
   const codeError = error && !error.ok && error.error !== "NICKNAME_TAKEN";
 
   let hint = "";
-  if (!codeComplete) hint = `Fill in all ${CODE_LENGTH} letters to join`;
+  if (!codeComplete) hint = `Fill in all ${CODE_LENGTH} digits to join`;
   else if (!trimmedName) hint = "Add your name to join";
 
   async function handleSubmit(event: FormEvent) {
@@ -65,7 +65,7 @@ export function JoinGroup({ initialName = "", onBack, onJoin, onJoined }: JoinGr
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <BackButton onClick={onBack} />
         <h1 className={styles.title}>Join a group</h1>
-        <p className={styles.subtitle}>Enter the {CODE_LENGTH}-letter code your friend shared.</p>
+        <p className={styles.subtitle}>Enter the {CODE_LENGTH}-digit code your friend shared.</p>
 
         <CodeInput
           value={code}
