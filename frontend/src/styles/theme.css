@@ -14,6 +14,8 @@
   --color-primary-soft: #ffe8e3; /* selected chip, avatar, Share invite pill */
   /* Not in Figma (no dialog designed yet): dim layer behind the Leave dialog. */
   --color-scrim: rgb(28 28 33 / 0.4);
+  /* Not in Figma (no dropdown designed yet): lift for the cuisine dropdown. */
+  --shadow-popover: 0 8px 24px rgb(28 28 33 / 0.12);
   /* Not in Figma yet (notes say "red 'Code not found'"); confirm in the style guide. */
   --color-error: #d92d20;
 
@@ -49,6 +51,7 @@
   --space-gap-lobby: 14px;
   --space-filter-label: 6px;
   --space-chip-gap: 8px;
+  --space-chip-gap-tight: 6px; /* Distance row: lets all 5 chips (with 20+ mi) fit one line at 390px */
   --space-avatar-gap: 10px;
   --space-card-y: 18px;
   --space-chip-x: 14px;
@@ -71,6 +74,7 @@
   --code-box-height: 80px;
   --tap-target-min: 44px;
   --avatar-size: 44px;
+  --dropdown-max-height: 232px; /* ~5 options, so it's clear the list scrolls */
   --screen-max-width: 430px;
 
   /* Motion */

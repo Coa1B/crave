@@ -2,10 +2,12 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Avatar } from "../../components/Avatar/Avatar";
 import { BackButton } from "../../components/BackButton/BackButton";
 import { Button } from "../../components/Button/Button";
+import { AddChip } from "../../components/AddChip/AddChip";
 import { Chip } from "../../components/Chip/Chip";
 import { ConfirmDialog } from "../../components/ConfirmDialog/ConfirmDialog";
 import { Screen, Spacer } from "../../components/Screen/Screen";
 import type { Member } from "../../api/groups";
+import { ALL_CUISINES, DEFAULT_CUISINE_IDS, cuisineLabel } from "../../data/cuisines";
 import type { ShareOutcome } from "../../utils/shareInvite";
 import shareIcon from "../../assets/icons/share.svg";
 import styles from "./Lobby.module.css";
@@ -18,16 +20,10 @@ export type LobbyFilters = {
   cuisines: string[];
 };
 
-export const DISTANCE_OPTIONS = [1, 3, 5, 10];
+/** The last option means "20 miles or more". */
+export const DISTANCE_OPTIONS = [1, 3, 5, 10, 20];
+const MAX_DISTANCE = DISTANCE_OPTIONS[DISTANCE_OPTIONS.length - 1];
 export const PRICE_OPTIONS = [1, 2, 3, 4];
-export const CUISINE_OPTIONS = [
-  { id: "mexican", label: "Mexican" },
-  { id: "thai", label: "Thai" },
-  { id: "pizza", label: "Pizza" },
-  { id: "sushi", label: "Sushi" },
-  { id: "burgers", label: "Burgers" },
-  { id: "indian", label: "Indian" },
-];
 export const DEFAULT_FILTERS: LobbyFilters = { distanceMiles: 3, price: 2, cuisines: [] };
 
 /** Swiping needs at least two people (Figma: "grey until ≥2 people"). */
@@ -68,6 +64,8 @@ export function Lobby({
   const [confirmLeave, setConfirmLeave] = useState(false);
   const [shareOutcome, setShareOutcome] = useState<ShareOutcome>("shared");
   const [announcement, setAnnouncement] = useState("");
+  // Cuisines added with "+" stay on screen even if unselected, so they can be tapped again.
+  const [addedCuisines, setAddedCuisines] = useState<string[]>([]);
 
   // People already here when the screen opens appear instantly; later arrivals pop in.
   const initialIds = useRef<Set<string> | null>(null);
@@ -96,6 +94,15 @@ export function Lobby({
     setShareOutcome(outcome);
     if (outcome === "copied") setAnnouncement("Invite copied");
     if (outcome === "failed") setAnnouncement("Couldn't share the invite");
+  }
+
+  // Default chips, then anything added here or already in the filters (e.g. picked by the host).
+  const cuisineChips = [...new Set([...DEFAULT_CUISINE_IDS, ...addedCuisines, ...filters.cuisines])];
+
+  function addCuisine(id: string) {
+    setAddedCuisines((list) => (list.includes(id) ? list : [...list, id]));
+    if (!filters.cuisines.includes(id)) onFiltersChange({ ...filters, cuisines: [...filters.cuisines, id] });
+    setAnnouncement(`${cuisineLabel(id)} added`);
   }
 
   function toggleCuisine(id: string) {
@@ -164,7 +171,7 @@ export function Lobby({
 
       <h2 className={styles.sectionTitle}>Filters</h2>
 
-      <FilterGroup id="filter-distance" label="Distance">
+      <FilterGroup id="filter-distance" label="Distance" tight>
         {DISTANCE_OPTIONS.map((miles) => (
           <Chip
             key={miles}
@@ -172,7 +179,7 @@ export function Lobby({
             disabled={readOnly}
             onClick={() => onFiltersChange({ ...filters, distanceMiles: miles })}
           >
-            {miles} mi
+            {miles === MAX_DISTANCE ? `${miles}+ mi` : `${miles} mi`}
           </Chip>
         ))}
       </FilterGroup>
@@ -192,16 +199,26 @@ export function Lobby({
       </FilterGroup>
 
       <FilterGroup id="filter-cuisine" label="Cuisine (pick any)">
-        {CUISINE_OPTIONS.map((c) => (
+        {cuisineChips.map((id) => (
           <Chip
-            key={c.id}
-            selected={filters.cuisines.includes(c.id)}
+            key={id}
+            selected={filters.cuisines.includes(id)}
             disabled={readOnly}
-            onClick={() => toggleCuisine(c.id)}
+            onClick={() => toggleCuisine(id)}
           >
-            {c.label}
+            {cuisineLabel(id)}
           </Chip>
         ))}
+        {!readOnly && (
+          <AddChip
+            options={ALL_CUISINES}
+            exclude={cuisineChips}
+            onAdd={addCuisine}
+            label="Add a cuisine"
+            placeholder="Search cuisines"
+            noMatchText={(q) => `No cuisines match "${q}"`}
+          />
+        )}
       </FilterGroup>
 
       <Spacer />
@@ -241,10 +258,13 @@ export function Lobby({
 function FilterGroup({
   id,
   label,
+  tight = false,
   children,
 }: {
   id: string;
   label: string;
+  /** Slightly smaller gap between chips. */
+  tight?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -252,7 +272,7 @@ function FilterGroup({
       <p id={id} className={styles.filterLabel}>
         {label}
       </p>
-      <div role="group" aria-labelledby={id} className={styles.chips}>
+      <div role="group" aria-labelledby={id} className={[styles.chips, tight && styles.tight].filter(Boolean).join(" ")}>
         {children}
       </div>
     </div>

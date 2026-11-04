@@ -149,6 +149,10 @@
   gap: var(--space-chip-gap);
 }
 
+.tight {
+  gap: var(--space-chip-gap-tight);
+}
+
 /* Guests see this where the host's Start button is. */
 .waiting {
   display: flex;
