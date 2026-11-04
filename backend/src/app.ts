@@ -1,4 +1,6 @@
+import cors from "cors";
 import express, { type ErrorRequestHandler } from "express";
+import { corsOrigin } from "./cors.js";
 import { ApiError, createGroup, joinGroup } from "./groups.js";
 import { emitToGroup } from "./live.js";
 
@@ -23,6 +25,7 @@ function readLocation(value: any): { lat: number; lng: number } {
 
 export function buildApp() {
   const app = express();
+  app.use(cors({ origin: corsOrigin }));
   app.use(express.json());
 
   app.get("/health", (_req, res) => {
